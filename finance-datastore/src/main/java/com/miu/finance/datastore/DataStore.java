@@ -6,5 +6,5 @@ public interface DataStore {
         return new FinanceDataStore();
     }
 
-    void persist(String jsonRecord) throws Exception;
+    void persist(String key, String jsonRecord) throws Exception;
 }

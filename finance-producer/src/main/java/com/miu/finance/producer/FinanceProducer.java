@@ -14,6 +14,29 @@ import java.util.Properties;
 public class FinanceProducer {
 
     private static final Gson gson = new Gson();
+    private static String[] symbolArray = {
+    	"MSFT",
+    	"AAPL",
+    	"NVDA",
+    	"AMZN",
+    	"META",
+    	"GOOGL",
+    	"GOOG",
+    	"BRK.B",
+    	"TSLA",
+    	"JPM",
+    	"XOM",
+    	"JNJ",
+    	"ADBE",
+    	"AMD",
+    	"NFLX",
+    	"WMT",
+    	"BAC",
+    	"CSCO",
+    	"INTC",
+    	"GE"
+    	
+    };
 
     public static void start() {
         String bootstrapServers = "localhost:9092";
@@ -28,16 +51,18 @@ public class FinanceProducer {
         long startTimestamp = FinanceUtils.getTimeStamp(LocalDateTime.parse(startDate + "T00:00:00"));
         LocalDate today = LocalDate.now();
         long endTimestamp = FinanceUtils.getTimeStamp(today);
+        for(String key: symbolArray) {
 
-        try (Producer<String, String> producer = new KafkaProducer<>(properties)) {
-            String historicalData = FinanceAPIClient.fetchHistoricalData("AAPL", startTimestamp, endTimestamp);
-
-            FinanceData financeData = gson.fromJson(historicalData, FinanceData.class);
-            for (FinanceData.Price price : financeData.getPrices()) {
-                producer.send(new ProducerRecord<>(topic, "key", gson.toJson(price)));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+	        try (Producer<String, String> producer = new KafkaProducer<>(properties)) {
+	            String historicalData = FinanceAPIClient.fetchHistoricalData(key, startTimestamp, endTimestamp);
+	
+	            FinanceData financeData = gson.fromJson(historicalData, FinanceData.class);
+	            for (FinanceData.Price price : financeData.getPrices()) {
+	                producer.send(new ProducerRecord<>(topic, key, gson.toJson(price)));
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
         }
     }
 

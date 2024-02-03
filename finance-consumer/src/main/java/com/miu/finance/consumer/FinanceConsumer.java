@@ -45,9 +45,9 @@ public class FinanceConsumer {
 
             records.forEach(record -> {
                 String jsonRecord = record.value();
-                System.out.println("[FinanceConsumer]jsonRecord = " + jsonRecord);
+                System.out.println("[FinanceConsumer] key: " + record.key() + " jsonRecord = " + jsonRecord);
                 try {
-                    dataStore.persist(jsonRecord);
+                    dataStore.persist(record.key(), jsonRecord);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

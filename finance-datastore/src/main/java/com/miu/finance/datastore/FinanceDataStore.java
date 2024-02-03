@@ -23,13 +23,13 @@ public class FinanceDataStore implements DataStore {
     }
 
     @Override
-    public void persist(String jsonRecord) throws Exception {
+    public void persist(String key, String jsonRecord) throws Exception {
         try (Connection conn = ConnectionFactory.createConnection(HBaseConfiguration.create()); Table table = conn.getTable(TableName.valueOf(TABLE_NAME))) {
             System.out.println("[FinanceDataStore]persist(" + jsonRecord + ')');
 
             FinanceData.Price price = gson.fromJson(jsonRecord, FinanceData.Price.class);
             long date = price.getDate();
-            Put put = new Put(Bytes.toBytes(Long.toString(date)));
+            Put put = new Put(Bytes.toBytes(key + date));
 
             String jsonProperties = gson.toJson(price);
             Map<String, Object> propertiesMap = gson.fromJson(jsonProperties, new TypeToken<Map<String, Object>>() {
