@@ -27,10 +27,11 @@ public class HBaseReader
 		this.hbaseConfig = HBaseConfiguration.create();
 	}
 
-	public List<FinanceData.Price> GetFiannceAnalysis() throws IOException
+	public List<FinanceDataHBase> GetFiannceAnalysis() throws IOException
 	{
-		List<FinanceData.Price> priceList=new ArrayList<FinanceData.Price>();
-
+//		List<FinanceData.Price> priceList=new ArrayList<FinanceData.Price>();
+		List<FinanceDataHBase> dataHBaseList=new ArrayList<FinanceDataHBase>();
+	
 		try (Connection connection = ConnectionFactory.createConnection(this.hbaseConfig))
 		{
 			Table table = connection.getTable(TableName.valueOf(TABLE_NAME));
@@ -42,28 +43,32 @@ public class HBaseReader
 			ResultScanner scanner = table.getScanner(scan);
 
 			for (Result result : scanner) {
+			//	FinanceDataHBase hBaseData = new FinanceDataHBase();
 				System.out.println("price: " + result);
-				FinanceData.Price price = parseResultToPrice(result);
-				System.out.println("price: "+ "22222222222");
-				System.out.println("price: " + price);
-				if (price != null) {
-					priceList.add(price);
+				FinanceDataHBase hBaseData = parseResultToPrice(result);
+				if (hBaseData != null) {
+					dataHBaseList.add(hBaseData);
 				}
 			}
 		}
-		return priceList;
+		return dataHBaseList;
 	}
-	private FinanceData.Price parseResultToPrice(Result result) {
-		// Assuming the row key could be the combination of key and date as in your persist method
+	private FinanceDataHBase parseResultToPrice(Result result) {
+
 		FinanceData.Price price = new FinanceData.Price();
+		FinanceDataHBase hBaseData = new FinanceDataHBase();
+		
+	    // Extracting the row key from the Result object
+	    String rowKey = Bytes.toString(result.getRow());
+	    hBaseData.setKey(rowKey); // Setting the row key on the Price object
 		for (Cell cell : result.listCells()) {
 			String qualifier = Bytes.toString(CellUtil.cloneQualifier(cell));
 			String value = Bytes.toString(CellUtil.cloneValue(cell));
-			System.out.println("qualifier: " + qualifier);
-			System.out.println("value: " + value);
+
 			switch (qualifier) {
+
 			case "date":
-				price.setDate(Long.parseLong(value));
+				price.setDate((long) Double.parseDouble(value));
 				break;
 			case "open":
 				price.setOpen(Double.parseDouble(value));
@@ -78,7 +83,7 @@ public class HBaseReader
 				price.setClose(Double.parseDouble(value));
 				break;
 			case "volume":
-				price.setVolume(Long.parseLong(value));
+				price.setVolume((long)Double.parseDouble(value));
 				break;
 			case "adjclose":
 				price.setAdjclose(Double.parseDouble(value));
@@ -88,6 +93,7 @@ public class HBaseReader
 				break;
 			}
 		}
-		return price;
+		hBaseData.setPrice(price);
+		return hBaseData;
 	}
 }
