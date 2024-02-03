@@ -33,8 +33,9 @@ public class FinanceProducer {
             String historicalData = FinanceAPIClient.fetchHistoricalData("AAPL", startTimestamp, endTimestamp);
 
             FinanceData financeData = gson.fromJson(historicalData, FinanceData.class);
-
-            producer.send(new ProducerRecord<>(topic, "key", gson.toJson(financeData)));
+            for (FinanceData.Price price : financeData.getPrices()) {
+                producer.send(new ProducerRecord<>(topic, "key", gson.toJson(price)));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,4 +1,5 @@
 package com.miu.finance.model;
+
 import java.util.List;
 
 public class FinanceData {
@@ -56,8 +57,6 @@ public class FinanceData {
     public void setEventsData(List<EventData> eventsData) {
         this.eventsData = eventsData;
     }
-
-    // Getters and setters
 
     public static class Price {
         private long date;
@@ -123,7 +122,6 @@ public class FinanceData {
         public void setAdjclose(double adjclose) {
             this.adjclose = adjclose;
         }
-
     }
 
     public static class TimeZone {
@@ -176,7 +174,5 @@ public class FinanceData {
         public void setType(String type) {
             this.type = type;
         }
-
-        // Getters and setters
     }
 }

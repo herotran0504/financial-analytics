@@ -13,7 +13,7 @@ import java.util.Properties;
 public class FinanceConsumer {
 
     private static final String BOOTSTRAP_SERVERS = "localhost:9092";
-    private static final String GROUP_ID = "hbase_finance_historical_consumer_group";
+    private static final String GROUP_ID = "finance_historical_consumer_group";
     private static final String TOPIC = "finance_historical_data";
 
     public static void start() {
@@ -45,7 +45,7 @@ public class FinanceConsumer {
 
             records.forEach(record -> {
                 String jsonRecord = record.value();
-
+                System.out.println("[FinanceConsumer]jsonRecord = " + jsonRecord);
                 try {
                     dataStore.persist(jsonRecord);
                 } catch (Exception e) {
