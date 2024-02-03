@@ -13,8 +13,9 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import java.util.Map;
 
+import static com.miu.finance.utils.FinanceUtils.TABLE_NAME;
+
 public class FinanceDataStore implements DataStore {
-    private static final String TABLE_NAME = "finance_historical_data_table";
     private static final String COLUMN_FAMILY = "cf";
     private static final Gson gson = new Gson();
 

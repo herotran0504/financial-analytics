@@ -122,6 +122,11 @@ public class FinanceData {
         public void setAdjclose(double adjclose) {
             this.adjclose = adjclose;
         }
+
+        @Override
+        public String toString() {
+            return "Price{" + "date=" + date + ", open=" + open + ", high=" + high + ", low=" + low + ", close=" + close + ", volume=" + volume + ", adjclose=" + adjclose + '}';
+        }
     }
 
     public static class TimeZone {

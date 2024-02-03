@@ -10,11 +10,12 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>finance-bootstrap</module>
         <module>finance-producer</module>
         <module>finance-consumer</module>
-        <module>finance-bootstrap</module>
-        <module>finance-utils</module>
         <module>finance-datastore</module>
+        <module>finance-generator</module>
+        <module>finance-utils</module>
     </modules>
 
     <properties>
