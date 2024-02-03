@@ -10,6 +10,7 @@ public class Bootstrap {
         FinanceDataStore.start();
         FinanceProducer.start();
         FinanceConsumer.start();
+	//       FinanceGenerator.start();
     }
 
 }
