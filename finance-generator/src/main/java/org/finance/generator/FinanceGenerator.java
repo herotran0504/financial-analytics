@@ -94,7 +94,11 @@ public class FinanceGenerator {
         Dataset<Row> summaryResult = spark.sql("SELECT * FROM financeData WHERE key != 'NULL'");
         summaryResult.show(5);
 
-        summaryResult.write().mode("append").option("header", "true").csv("hdfs://localhost/user/cloudera/FinanceDataSummary");
+        // Coalesce the DataFrame to 1 partition before writing to ensure a single output file.
+		// Warning: This can be inefficient for large datasets!
+        Dataset<Row> coalescedResult = summaryResult.coalesce(1);
+
+        coalescedResult.write().mode("append").option("header", "true").csv("hdfs://localhost/user/cloudera/FinanceDataSummary");
     }
 
     private static DataType getDataType(String fieldName) {
