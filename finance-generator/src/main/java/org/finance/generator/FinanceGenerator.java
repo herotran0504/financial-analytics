@@ -21,7 +21,6 @@ import org.finance.hbasereader.HBaseReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.miu.finance.utils.FinanceUtils.TABLE_NAME;
 
@@ -64,8 +63,8 @@ public class FinanceGenerator {
         }
     }
 
-    private static void generateFinanceDataAnalysis(JavaSparkContext sc, SparkSession spark, List<FinanceDataHBase> financeDataHBases) {
-        JavaRDD<FinanceDataHBase> financeDataRDD = sc.parallelize(financeDataHBases.stream().limit(100).collect(Collectors.toList()));
+    private static void generateFinanceDataAnalysis(JavaSparkContext sc, SparkSession spark, List<FinanceDataHBase> dataHBases) {
+        JavaRDD<FinanceDataHBase> financeDataRDD = sc.parallelize(dataHBases);
         String schemaString = "key date open high low close volume adjclose";
 
         List<StructField> fields = new ArrayList<>();
