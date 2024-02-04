@@ -22,7 +22,7 @@ public class FinanceAPIClient {
         HttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(uri);
         httpGet.setHeader("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com");
-        httpGet.setHeader("x-rapidapi-key", "e610553b4cmshb22dc6c3e9494f8p1467bejsn542357ece6c1");
+        httpGet.setHeader("x-rapidapi-key", "a5783ca9b2mshd1b9b38036dca4fp16143bjsna41c0ff20533");
         System.out.println("Fetching data of symbol: " + symbol);
 
         HttpResponse response = httpClient.execute(httpGet);
