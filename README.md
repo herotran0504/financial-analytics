@@ -45,7 +45,7 @@ Follow these steps to start and stop Kafka:
    ```bash
    cd /path/to/kafka/directory
    
-2. Start ZooKeeper:
+2. Start ZooKeeper if not running:
     ```bash
     ./bin/zookeeper-server-start.sh config/zookeeper.properties
 

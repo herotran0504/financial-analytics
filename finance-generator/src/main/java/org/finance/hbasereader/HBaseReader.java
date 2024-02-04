@@ -10,15 +10,16 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class HBaseReader {
 
+    private static final Pattern PATTERN = Pattern.compile("\\d");
+
     public static List<FinanceDataHBase> getFinanceAnalysis(ResultScanner scanner) {
         List<FinanceDataHBase> dataHBaseList = new ArrayList<>();
-
         for (Result result : scanner) {
-            FinanceDataHBase hBaseData = parseResultToPrice(result);
-            dataHBaseList.add(hBaseData);
+            dataHBaseList.add(parseResultToPrice(result));
         }
 
         return dataHBaseList;
@@ -29,7 +30,7 @@ public class HBaseReader {
         FinanceDataHBase hBaseData = new FinanceDataHBase();
 
         String rowKey = Bytes.toString(result.getRow());
-        hBaseData.setKey(rowKey);
+        hBaseData.setKey(normalizeKey(rowKey));
         for (Cell cell : result.listCells()) {
             String qualifier = Bytes.toString(CellUtil.cloneQualifier(cell));
             String value = Bytes.toString(CellUtil.cloneValue(cell));
@@ -62,4 +63,9 @@ public class HBaseReader {
         hBaseData.setPrice(price);
         return hBaseData;
     }
+
+    private static String normalizeKey(String rowKey) {
+        return PATTERN.matcher(rowKey).replaceAll("");
+    }
+
 }

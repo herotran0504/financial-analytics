@@ -18,12 +18,11 @@ public class FinanceAPIClient {
         String query = String.format("symbol=%s&region=US&period1=%d&period2=%d&frequency=%s&filter=%s", symbol, startTimestamp, endTimestamp, "1d", "history");
 
         URI uri = URI.create(baseUrl + '?' + query);
-
+        System.out.println("Fetching data uri: " + uri);
         HttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(uri);
         httpGet.setHeader("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com");
         httpGet.setHeader("x-rapidapi-key", "a5783ca9b2mshd1b9b38036dca4fp16143bjsna41c0ff20533");
-        System.out.println("Fetching data of symbol: " + symbol);
 
         HttpResponse response = httpClient.execute(httpGet);
         HttpEntity entity = response.getEntity();
