@@ -15,27 +15,7 @@ public class FinanceProducer {
 
     private static final Gson gson = new Gson();
     private static String[] symbolArray = {
-    	"MSFT",
-    	"AAPL",
-    	"NVDA",
-    	"AMZN",
-    	"META",
-    	"GOOGL",
-    	"GOOG",
-    	"BRK.B",
-    	"TSLA",
-    	"JPM",
-    	"XOM",
-    	"JNJ",
-    	"ADBE",
-    	"AMD",
-    	"NFLX",
-    	"WMT",
-    	"BAC",
-    	"CSCO",
-    	"INTC",
-    	"GE"
-    	
+    	"MSFT"
     };
 
     public static void start() {
@@ -47,7 +27,7 @@ public class FinanceProducer {
         properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
-        String startDate = "2023-12-12";
+        String startDate = "2024-01-01";
         long startTimestamp = FinanceUtils.getTimeStamp(LocalDateTime.parse(startDate + "T00:00:00"));
         LocalDate today = LocalDate.now();
         long endTimestamp = FinanceUtils.getTimeStamp(today);

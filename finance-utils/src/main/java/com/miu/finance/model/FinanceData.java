@@ -1,8 +1,9 @@
 package com.miu.finance.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class FinanceData {
+public class FinanceData implements Serializable {
     private List<Price> prices;
     private boolean isPending;
     private long firstTradeDate;
@@ -58,7 +59,7 @@ public class FinanceData {
         this.eventsData = eventsData;
     }
 
-    public static class Price {
+    public static class Price implements Serializable {
         private long date;
         private double open;
         private double high;
