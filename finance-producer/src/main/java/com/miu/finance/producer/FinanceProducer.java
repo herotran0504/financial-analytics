@@ -15,7 +15,7 @@ public class FinanceProducer {
 
     private static final Gson gson = new Gson();
     private static String[] symbolArray = {
-    	"MSFT"
+            "MSFT"
     };
 
     public static void start() {
@@ -33,16 +33,21 @@ public class FinanceProducer {
         long endTimestamp = FinanceUtils.getTimeStamp(today);
         for(String key: symbolArray) {
 
-	        try (Producer<String, String> producer = new KafkaProducer<>(properties)) {
-	            String historicalData = FinanceAPIClient.fetchHistoricalData(key, startTimestamp, endTimestamp);
-	
-	            FinanceData financeData = gson.fromJson(historicalData, FinanceData.class);
-	            for (FinanceData.Price price : financeData.getPrices()) {
-	                producer.send(new ProducerRecord<>(topic, key, gson.toJson(price)));
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+            try (Producer<String, String> producer = new KafkaProducer<>(properties)) {
+                String historicalData = FinanceAPIClient.fetchHistoricalData(key, startTimestamp, endTimestamp);
+
+                FinanceData financeData = gson.fromJson(historicalData, FinanceData.class);
+                for (FinanceData.Price price : financeData.getPrices()) {
+                    if(price.getOpen() != 0.0 && price.getVolume() != 0)
+                    {
+//	            		System.out.println(price);
+                        producer.send(new ProducerRecord<>(topic, key, gson.toJson(price)));
+                    }
+//	                producer.send(new ProducerRecord<>(topic, key, gson.toJson(price)));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
