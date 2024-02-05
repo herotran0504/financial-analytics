@@ -52,3 +52,12 @@ Follow these steps to start and stop Kafka:
 3. Start Kafka Broker:
     ```bash
     ./bin/kafka-server-start.sh config/server.properties
+   
+4. Start KafKa Producer:
+   ```run Bootstrap main()``` 
+   which will trigger API call, send events from Producer to Kafka Broker. Kafka then receives events and persist data to HBase.
+5. Start Generator:
+   ```run FinanceGenerator main()``` 
+   which will read data from HBase, create Data Frame by Spark, make desired query and write result to csv file in HDFS.
+6. Start Hive CLI:
+   TBA
