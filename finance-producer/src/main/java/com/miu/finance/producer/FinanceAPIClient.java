@@ -13,7 +13,8 @@ import java.net.URI;
 public class FinanceAPIClient {
 
     public static String fetchHistoricalData(String symbol, long startTimestamp, long endTimestamp) throws Exception {
-        String baseUrl = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-data";
+//        String baseUrl = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-historical-data";
+        String baseUrl = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-historical-data";
 
         String query = String.format("symbol=%s&region=US&period1=%d&period2=%d&frequency=%s&filter=%s", symbol, startTimestamp, endTimestamp, "1d", "history");
 
