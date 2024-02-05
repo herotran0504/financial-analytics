@@ -60,4 +60,27 @@ Follow these steps to start and stop Kafka:
    ```run FinanceGenerator main()``` 
    which will read data from HBase, create Data Frame by Spark, make desired query and write result to csv file in HDFS.
 6. Start Hive CLI:
-   TBA
+   Create and use database
+   ```bash
+   CREATE DATABASE financialanalytics;
+   USE financialanalytics;
+   ```
+      Create external table and link to hdfs file location
+   ```bash
+   CREATE EXTERNAL TABLE stock (key String, date INT, open Double, high Double, low Double, close Double, volume INT, adjclose Double) COMMENT 'MSFT Stock table' ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES('seperatorChar' =',', 'quoteChar' = '"', 'escapeChar'='\\', 'serde.null.format' = '', 'skip.header.line.count' = '1') STORED AS TEXTFILE LOCATION '/user/cloudera/FinanceDataSummary';
+   ```
+      Create the view to resolve the issue with data type as after loading data from csv file, all data types become String
+   ```bash
+   CREATE VIEW stockview AS SELECT st.key key, CAST(st.date as INT) date, CAST(st.open as Double) open, CAST(st.high as Double) high, CAST(st.low as Double) low, CAST(st.close as Double) close, CAST(st.volume as INT) volume, CAST(st.adjclose as Double) adjclose FROM stock st;
+   ```
+   
+7. Start tableau. Using tableau Desktop version, install ODBC driver for cloudera hadoop
+   - Connect to Cloudera Hadoop:
+     - Connection: HiveServer2
+     - Server: --input the ip address of vmw machine--
+     - Port: 10000(default)
+     - Authentication: Username
+     - Username: cloudera
+   - Select schema: input the database which created in Hive, "financialanalytics" for example
+   - Select table: input the table name which created in Hive, "stockview" for example
+   - Now it's ready for visualizations.
